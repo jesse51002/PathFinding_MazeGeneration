@@ -27,7 +27,7 @@ canvas {
 
 .BlueInfo{
   text-align: center;
-  font-size: 20px;
+  font-size: 30px;
   color: blue;
   margin-bottom: 3px;
 }
@@ -35,26 +35,16 @@ canvas {
 .PageHolder{
   display: flex;
   justify-content: center;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 1300px) {
-  .PageHolder{
-    flex-direction: column;
-  }
-  .MainBody{
-    order: -2;
-  }
-
-  .ExplainationPara{
-    font-size: 10px;
-  }
+  flex-direction: column;
 }
 
 .MainBody{
-  display: block;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   margin: auto;
   flex:0.5;
+  order: -2;
 }
 
 .P5Canvas{
@@ -86,33 +76,46 @@ canvas {
 }
 
 .SliderHolder{
-  display: block;
-  justify-content: center;
-  margin: auto;
-  margin-top: 20px;
-  width: 500px;
+  padding: 0 50px;
 }
 
 .slider{
   -webkit-appearance: none;  
   appearance: none;
-  width: 100%;
-  height: 25px; 
+  width: 50px;
+  height: 600px; 
   background: yellow; 
   outline: none; 
   transition: opacity .2s;
   border: 10px solid rgb(214, 214, 214);
   margin: 0;
+  writing-mode: bt-lr; /* IE */
+  -webkit-appearance: slider-vertical; /* WebKit */
 }
 
-.Speed{
+@media screen and (max-width: 1300px) {
+  .MainBody{
+    flex-direction: column;
+  }
+  .slider{
+    -webkit-appearance: slider-horizontal;
+    width:600px;
+    height:50px;
+  }
+  .SliderHolder{
+    padding: 50px 0;
+    order: 3;
+  }
+}
+
+.Speed, .Maze{
   color: yellow;
   font-size: 30px;
   text-align: center;
   margin: 5px;
 }
 
-.ExplainationHolder{
+.ExplainationHolder{  
   flex:0.25;
 }
 
@@ -125,6 +128,18 @@ canvas {
   color: yellow;
   text-decoration: underline;
 }
+
 .ExplainationPara{
-  color: yellow
+  color: yellow;
+  font-size:30px;
+}
+
+/* Firefox Overrides*/
+::-moz-range-track {
+    background: #ccc;
+    border: 0;
+}
+
+input::-moz-focus-inner { 
+  border: 0; 
 }

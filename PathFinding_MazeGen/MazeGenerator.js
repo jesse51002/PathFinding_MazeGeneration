@@ -7,21 +7,24 @@
      
      //Makes a seperate grid where we won't have extra indexes for the wall tiles
      this.generateGrid = [];
-     for(i = 0; i < floor(gridSize/2); i++){
+     for(i = 0; i < Math.ceil(gridSize/2); i++){
        this.generateGrid[i] = [];
-       for(j = 0; j < floor(gridSize/2); j++){
+       for(j = 0; j < Math.ceil(gridSize/2); j++){
          this.generateGrid[i][j] = new cell(createVector(i,j));
        }
      }
      //Sets a random position as the end position
-     this.endPos = createVector(floor(random(3,floor(gridSize/2))) * 2, floor(random(3,floor(gridSize/2))) * 2) ;
-     
+     this.endPos = createVector(floor(random(3,this.generateGrid.length -1 )) * 2, floor(random(3,this.generateGrid.length - 1))* 2);
+     print(this.endPos);
      //Sets the wall cells
      for(i = 0; i < gridSize; i++){
        for(j = 0; j < gridSize; j++){
          grid[i][j].reset(); 
          if(i %2 == 1 || j % 2 == 1){
            grid[i][j].isObstacle = true;           
+         }
+         else{
+          grid[i][j].isObstacle = false;   
          }
 
        }

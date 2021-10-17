@@ -22,38 +22,51 @@
         <div class="Expaination">
           <h2 class="ExplainTitle">Randomized depth-first search</h2>
           <p class="ExplainationPara">
-            The Maze Generator used a "Randomized depth-first search" also known as "recursive backtracker". In this algorithm each cell has 4 walls on each side of the cell. Starting from any cell the computer goes to another cell removing the wall seperating the movement. It then markes the cell as visited so that it won't go to the cell again. When the computer reaches a dead end it backtracks until it can go then an unvisted cell. This is looped until all the cells are visited.
+            The Maze Generator used a "Randomized depth-first search" also known as "recursive backtracker". In this algorithm each cell has 4 walls on each side of its sides. Starting from an arbitary cell the program expands to a random cell around it removing the wall seperating the movement. It then markes the cell as visited because you can not expand to a cell twice. When the computer reaches a dead end it backtracks until it reaches a cell that is expandable. This is looped until all the cells have been fully expanded.
           </p>
         </div>
 
         <div class="Expaination">
           <h2 class="ExplainTitle">Depth First Search</h2>
           <p class="ExplainationPara">
-            To do a depth first search you must have a starting point. Once you have the starting point, you then expand to the possible surrounding cells and mark the start cell as visited. Whenever you expand you save the previous cells inorder to save the path. Then you expand the most recently added cell to cells that haven't been visited. This means that if in your algorithm you expand to the left last, the left cell will always be your most recently added cell. You do this until you reach the target cell. This means the algorithm will always try to expand left. This means that if the target point was right above the starting point this algorithm might take a longer route to get there.
+            To do a depth first search you must have a starting point. Once you have the starting point, you then expand to the possible surrounding cells and mark the start cell as visited. Whenever you expand you save the previous cells inorder to save the path it took to get to that cell. Then you expand the most recently added cell to all the unvisited cells around it and mark the cell visited. You do this until you reach the target cell. This means that if in your algorithm you expand to the left last, the left cell will always be your most recently added cell. This means the algorithm will always try to expand left. This means that if the target point was right above the starting point this algorithm might take a longer route to get there since it will attempt to go left until it can't.
           </p>
         </div>
       </div>
 
       <div class="MainBody">
 
-        <div id="P5Canvas" class="P5Canvas"></div>
-  
-        <div class="InputHolder">
-          <div class="ButtonHolder">
-            <button id="GenerateMazeButton" class="Button">
-              Generate Maze
-            </button>
-    
-            <button id="PathFindButton" class="Button"> Pathfind</button>
-          </div>
-    
-          <div class="SliderHolder">
-            <input type="range" min="0" max="100" value="50" class="slider" id="SpeedSlider">
+        <div class="SliderHolder">
 
-            <h3 class="Speed" id="SliderSpeed"> Speed: 0.5</h3>
-          </div>
-        </div>
+          <h3 class="Speed">Speed</h3>
+
+          <input type="range" orient="vertical" min="0" max="100" value="50" class="slider" id="SpeedSlider">
   
+          <h3 class="Speed" id="SliderSpeed"> 0.5</h3>
+        </div>
+
+        <div class="PathFindingGrid">
+          <div id="P5Canvas" class="P5Canvas"></div>
+  
+          <div class="InputHolder">
+            <div class="ButtonHolder">
+              <button id="GenerateMazeButton" class="Button">
+                Generate Maze
+              </button>
+      
+              <button id="PathFindButton" class="Button"> Pathfind</button>
+            </div>
+          </div> 
+        </div>
+        
+        <div class="SliderHolder">
+
+          <h3 class="Maze">Maze</h3>
+
+          <input type="range" orient="vertical" min="5" max="50" value="30" class="slider" id="MazeSlider">
+  
+          <h3 class="Maze" id="SliderMaze">30</h3>
+        </div>
   
       </div>
 
@@ -61,14 +74,14 @@
         <div class="Expaination">
           <h2 class="ExplainTitle">Breath First Search</h2>
           <p class="ExplainationPara">
-            To do a breath first search you must have a starting point. Once you have the starting point, you then expand to the possible surrounding cells and mark the start cell as visited. Whenever you expand you save the previous cells inorder to save the path. Then you expand the least recently added cell to cells that haven't been visited. This makes this algorithm always find the fastest path at the cost of speed. That is beacuse it checks every possible way to get to the target location, making it unrealisitc to use for larget mazes.
+            To do a breath first search you must have a starting point. Once you have the starting point, you then expand to the possible surrounding cells and mark the start cell as visited. Whenever you expand you save the previous cells inorder to save the path it took to get to that cell. Then you expand the least recently added cell to all the unvisited cells around it and mark the cell visited. This makes this algorithm always find the fastest path at the cost of speed. That is beacuse it checks every possible path to get to the target location although this makes it unrealisitc to use for larger mazes.
           </p>
         </div>
 
         <div class="Expaination">
           <h2 class="ExplainTitle">A* Search</h2>
           <p class="ExplainationPara">
-            To do a A* first search you must have a starting point. Once you have the starting point, you then expand to the possible surrounding cells and mark the start cell as visited. Whenever you expand you save the previous cells inorder to save the path. Then you expand the cell that is closest to the target. This makes the algorithm is usually the fastest. This is because it attempts to get closer to the target as quickly as possible.
+            To do a A* first search you must have a starting point. Once you have the starting point, you then expand to the possible surrounding cells and mark the start cell as visited. Whenever you expand you save the previous cells inorder to save the path it took to get to that cell. Then you expand the cell that has the lowest cost to all the unvisited cells around it and mark the cell visited. The cost is calculated by adding the distance from the start(G cost) to the distance from the end(H Cost). This algorithm will always find the fastest route because it finds the path with the lowest cost. This makes the A* Algorithm the most practical out of the 3 because its essentially a smarter Breath First search algorithm.
           </p>
         </div>
       </div>

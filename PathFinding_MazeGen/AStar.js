@@ -19,7 +19,6 @@ class AStar{
       for(j = 0; j < gridSize; j++){
         this.grid[i][j] = new cell(createVector(i,j));
         this.grid[i][j].cloneCell(grid[i][j]);
-        //print(grid[i][j].isObstacle)
       }
     }
     
@@ -38,26 +37,43 @@ class AStar{
 
   //Returns the closest open cell index
   //Uses a^2 + b^2 = c^2 to get the distance
-  FindClosestOpen(){
+  FindCheapestNode(){
     if(this.openSet.length <= 0){
       return -1;
     }
     
-    let Xsquare = Math.pow(this.endPos.x - this.openSet[0].pos.x, 2);
-    let Ysquare = Math.pow(this.endPos.y - this.openSet[0].pos.y, 2);
-    let distance = Math.sqrt(Xsquare + Ysquare, 2);
+    //H cost(distance from end node)
+    let XDiff = Math.abs(this.endPos.x - this.openSet[0].pos.x);
+    let YDiff = Math.abs(this.endPos.y - this.openSet[0].pos.y);
+    let distance = XDiff + YDiff;
+    
+    //G Cost(distance from start node)
+    let pathLength = this.openSet[0].previousCells.length;
+    
+    //Cost H cost + G cost
+    let cost = distance + pathLength;
 
-    let closestDistance= distance;
+    //Intializes cost of the first node to be the cheapest
+    let cheapestCost = cost;
     let closestIndex = 0;
 
     if(this.openSet.length > 1){
+      //H cost(distance from end node)
       for(i = 1; i < this.openSet.length; i++){
-        Xsquare = Math.pow(this.endPos.x- this.openSet[i].pos.x, 2);
-        Ysquare = Math.pow(this.endPos.y - this.openSet[i].pos.y, 2);
-        distance = Math.floor(Math.sqrt(Xsquare + Ysquare), 2);
-        //print(distance);
-        if(distance < closestDistance){
-          closestDistance = distance;
+        //H cost(distance from end node)
+        let XDiff = Math.abs(this.endPos.x - this.openSet[i].pos.x);
+        let YDiff = Math.abs(this.endPos.y - this.openSet[i].pos.y);
+        let distance = XDiff + YDiff;
+        
+        //G Cost(distance from start node)
+        let pathLength = this.openSet[i].previousCells.length;
+
+        //Cost H cost + G cost
+        let cost = distance + pathLength;
+       
+        //If it lower than the current cheaper cost then this is the new current cheapest cost
+        if(cost < cheapestCost){
+          cheapestCost = cost;
           closestIndex = i;
         }
       }
@@ -75,7 +91,7 @@ class AStar{
     }
     
     //Gets the index of the closest expandable grid
-    let closestOpenSetIndex = this.FindClosestOpen();
+    let closestOpenSetIndex = this.FindCheapestNode();
     
     //If it's -1 that means there no grid to expand meaning the maze is unsolvable
     if(closestOpenSetIndex == -1){
@@ -100,8 +116,8 @@ class AStar{
       return false;
 
     let checkCell = this.grid[pos.x][pos.y];
-    //If cell has been expanded to already or is an unpassable grid it's invalid
-    if(checkCell.isObstacle || checkCell.closeSet || checkCell.openSet){
+    //If cell has been expanded from already or is an unpassable grid it's invalid
+    if(checkCell.isObstacle || checkCell.closeSet){
       return false;
     }
     //Otherwise the cell can be expanded on to
@@ -113,6 +129,13 @@ class AStar{
   MakeNewOpenSet(pos, oldCell){
     //Makes a expandable cell
     let NewOpenCell = this.grid[pos.x][pos.y];
+
+    //If the position is already an open set and has a lower cost than this new move
+    //then keep the open set already there
+    if(NewOpenCell.openSet && oldCell.previousCells.length + 1 > NewOpenCell.previousCells.length){
+      return;
+    }
+
     NewOpenCell.openSet = true;
     //Gets the path from the cell it's expanded from
     NewOpenCell.previousCells = [...oldCell.previousCells];
@@ -190,16 +213,16 @@ class AStar{
       }
     }
     
-    //Draws the path of the cell that was being expaned blue
-    this.closest = this.openSet[this.FindClosestOpen()];
-
-    for(i = 0; i < this.closest.previousCells.length; i++){
-      let c = color(0,0,255);
-          fill(c);
-          rect(this.canvasX + this.canvasCellSize * this.closest.previousCells[i].pos.x, this.canvasY + this.canvasCellSize * this.closest.previousCells[i].pos.y, this.canvasCellSize,  this.canvasCellSize);
-
+    if(this.completedPathCell){
+      for(i = 0; i < this.completedPathCell.previousCells.length; i++){
+        let c = color(0,0,255);
+            fill(c);
+            rect(this.canvasX + this.canvasCellSize * this.completedPathCell.previousCells[i].pos.x,
+               this.canvasY + this.canvasCellSize * this.completedPathCell.previousCells[i].pos.y,
+                this.canvasCellSize,  this.canvasCellSize
+              );
+      }
     }
-    
     //Draws the target point purple
     fill(125,0,255);
     rect(this.canvasX + this.canvasCellSize * this.endPos.x, this.canvasY + this.canvasCellSize * this.endPos.y, this.canvasCellSize,  this.canvasCellSize);
